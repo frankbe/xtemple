@@ -1,0 +1,6 @@
+http://www.straub.as/java/io/io10.html
+http://openbook.galileocomputing.de/javainsel9/javainsel_17_008.htm#mje0c8562dbd63f757609825045dddf21d
+http://www.data2type.de/xml-xslt-xslfo/wordml/wordml-einfuehrung/grundaufbau0/
+http://stackoverflow.com/questions/970675/scala-modifying-nested-elements-in-xml
+http://www.scala-sbt.org/release/docs/Community/Community-Plugins.html
+http://befused.com/git/existing-project-github
