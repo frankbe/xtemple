@@ -15,10 +15,9 @@ class TestSuite extends FunSuite {
 
   test("simple document processing") {
     val template = new File("res/test.docx").ensuring(_.exists)
-    val outfile = new File("out.docx")
-    outfile.delete
-    Transformer.transform("res/test.docx", mapping.get(_), "out.docx")
-    //assert(outfile.exists && outfile.length > 0, "no target file")
+    val outfile = new File("out.docx").ensuring(f => !f.exists() || f.delete())
+    Transformer.transform(template, mapping.get(_), outfile)
+    assert(outfile.exists && outfile.length > 0, "no target file")
   }
 
 }

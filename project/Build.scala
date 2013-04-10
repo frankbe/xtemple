@@ -14,7 +14,7 @@ object Build extends sbt.Build {
   resourceDirectory in Compile <<= baseDirectory(_ / "resources"),
     mainClass in Compile := Some("frankbe.xtemple.Main"),
 
-    libraryDependencies += "commons-io" % "commons-io" % "2.4",
+    //libraryDependencies += "commons-io" % "commons-io" % "2.4",
     //publishTo := Some(Resolver.url("sbt-plugin-releases", new URL("http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/"))(Resolver.ivyStylePatterns)),
     publishMavenStyle := false
     //credentials += Credentials("Artifactory Realm", "scalasbt.artifactoryonline.com", "frankbe", """\{DESkey...==""")

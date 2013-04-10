@@ -2,7 +2,6 @@ package frankbe.xtemple
 
 import java.util.zip.{ZipFile, ZipOutputStream, ZipEntry}
 import java.io.OutputStream
-import org.apache.commons.io.IOUtils
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,7 +14,7 @@ abstract class ZipEntryTransformer(inputFile: ZipFile) extends StatefulResultTra
   protected def skipEntry(entry: ZipEntry) = false
 
   protected def innerTransform(source: ZipEntry, getParam: String => Option[String], outputStream: OutputStream) {
-    IOUtils.copy(inputFile.getInputStream(source), outputStream)
+    Utils.copy(inputFile.getInputStream(source), outputStream)
     //Utils.stream(inputFile.getInputStream(source), outputStream)
   }
 
