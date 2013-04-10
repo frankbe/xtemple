@@ -7,7 +7,7 @@ object Build extends sbt.Build {
   val project = Project("xtemple", file(".")).settings(
     //sbtPlugin := true,
     organization := "frankbe",
-    version := "0.1-SNAPSHOT",
+    version := "0.2",
     libraryDependencies += "org.scalatest" %% "scalatest" % "1.6.1" % "test",
   sourceDirectory in Compile <<= baseDirectory(_ / "src"),
   sourceDirectory in Test <<= baseDirectory(_ / "test"),
