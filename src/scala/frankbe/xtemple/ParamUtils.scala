@@ -1,5 +1,8 @@
 package frankbe.xtemple
 
+import java.io.{StringReader, Writer, Reader}
+import com.github.mustachejava.{MustacheFactory, DefaultMustacheFactory}
+
 /**
  * Created with IntelliJ IDEA.
  * User: frankbe
@@ -9,13 +12,25 @@ package frankbe.xtemple
 object ParamUtils {
   private val paramPattern = """\$\{([A-Za-z0-9_]+)\}""".r
 
-  def replaceAllParams(text: String, getParam: String=>Option[String]): String = {
-    paramPattern.replaceAllIn(text, {matcher =>
+
+  def simpleReplace(reader: Reader, writer: Writer, getParam: String=>Option[String]) {
+    val source = Utils.readAll(reader)
+    val target = paramPattern.replaceAllIn(source, {matcher =>
       require(matcher.groupCount == 1, "regex error - unexpected group count")
       val paramName = matcher.group(1)
       println("matcher.matched: " + paramName)
       getParam(paramName).getOrElse("-")// matcher.source.toString)
     })
+    //println("source.length: " + source.length)
+    //println("target.length: " + target.length)
+    writer.write(target)
+  }
+
+  //TODO repair
+  def mustacheReplace(factory: MustacheFactory, reader: Reader, writer: Writer, scope: AnyRef) {
+    val mustache = factory.compile(reader, "main")
+    mustache.execute(writer, scope)
+    //writer.flush()
   }
 
 }
