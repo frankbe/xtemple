@@ -13,16 +13,15 @@ abstract class ZipEntryTransformer(inputFile: ZipFile) extends StatefulResultTra
 
   protected def skipEntry(entry: ZipEntry) = false
 
-  protected def innerTransform(source: ZipEntry, getParam: String => Option[String], outputStream: OutputStream) {
+  protected def copy(source: ZipEntry, outputStream: OutputStream) {
     Utils.copy(inputFile.getInputStream(source), outputStream)
-    //Utils.stream(inputFile.getInputStream(source), outputStream)
   }
 
-  def transform(source: ZipEntry, getParam: String => Option[String], target: ZipOutputStream) {
+  def transform(source: ZipEntry, target: ZipOutputStream)(fn: RewriteContent) {
     if (!skipEntry(source)) {
       val te = new ZipEntry(source.getName)
       target.putNextEntry(te)
-      innerTransform(source, getParam, target)
+      copy(source, target)
       target.closeEntry()
     }
   }

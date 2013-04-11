@@ -12,10 +12,10 @@ import scala.Predef._
  */
 
 
-// Does not yes work...
+//TODO remove?
 class WordMLNodeTransformer extends StatelessResultTransformer[Node, Node]{
 
-  def transform(source: Node, getParam: String => Option[String]): Node = {
+  def transform(source: Node)(fn: RewriteContent): Node = {
     val textElements = source \\ "t"
     val rewriteTextNodes = new RewriteRule {
       override def transform(n: Node): Seq[Node] = {
@@ -25,7 +25,7 @@ class WordMLNodeTransformer extends StatelessResultTransformer[Node, Node]{
           case x => x
         }
         if (textElements.contains(n))
-          //Array[Node](copyWithNewText(n, ParamUtils.replaceAllParams(n.text, getParam)))
+          //Array[Node](copyWithNewText(n, ParamUtils.simpleReplace(n.text, getParam)))
           Array[Node](n)
         else Array[Node](n)
       }

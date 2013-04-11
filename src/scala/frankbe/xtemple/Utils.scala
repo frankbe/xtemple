@@ -1,7 +1,6 @@
 package frankbe.xtemple
 
-import java.io.{StringWriter, OutputStream, InputStream}
-import java.nio.charset.Charset
+import java.io.{OutputStream, InputStream}
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,17 +31,16 @@ object Utils {
     doStream()
   }
 
-  def readAll(is: java.io.InputStream, charset: String = "UTF-8"): String = {
+/*  def readAll(is: java.io.InputStream, charset: String = "UTF-8"): String = {
     val s = new java.util.Scanner(is, charset).useDelimiter("\\A")
     if (s.hasNext()) s.next() else ""
-  }
+  } */
 
-  def readAll(reader: java.io.Reader, bufferSize: Int = 8192): String = {
-    val buffer = new Array[Char](bufferSize)
+  def readAll(reader: java.io.Reader): String = {
     val sb = new StringBuilder()
     var n = EOF
-    while (EOF != {n = reader.read(buffer); n}) {
-      sb.append(n.toChar)
+    while (EOF != {n = reader.read(); n}) {
+      sb.append(n.asInstanceOf[Char])
     }
     sb.toString()
   }

@@ -13,20 +13,20 @@ import java.io._
  */
 abstract class ZipFileTransformer extends StatefulResultTransformer[ZipFile, ZipOutputStream] {
 
-  protected def createEntryTransformer(source: ZipFile): ZipEntryTransformer
+  protected def createEntryTransformer(source: ZipFile)(fn: RewriteContent): ZipEntryTransformer
 
-  def transform(source: ZipFile, getParam: String => Option[String], target: ZipOutputStream) {
-    val et = createEntryTransformer(source)
+  def transform(source: ZipFile, target: ZipOutputStream)(fn: RewriteContent) {
+    val et = createEntryTransformer(source)(fn)
     for (item: ZipEntry <- enumerationAsScalaIterator(source.entries)) {
-      et.transform(item, getParam, target)
+      et.transform(item, target)(fn)
     }
   }
 
-  def transform(source: File, getParam: String => Option[String], target: File) {
+  def transform(source: File, target: File)(fn: RewriteContent) {
     require(source.exists, "the source file " + source + " does not exist")
     require(source.isFile, "the source file " + source + " is not a file")
     using(new ZipOutputStream( new FileOutputStream(target))) { zipOut =>
-      transform(new ZipFile(source), getParam, zipOut)
+      transform(new ZipFile(source), zipOut)(fn)
     }
   }
 }
