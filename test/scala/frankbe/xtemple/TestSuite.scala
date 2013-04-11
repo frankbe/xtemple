@@ -1,7 +1,7 @@
 package frankbe.xtemple
 
 import org.scalatest.FunSuite
-import java.io.File
+import java.io._
 
 class TestSuite extends FunSuite {
 
@@ -11,6 +11,12 @@ class TestSuite extends FunSuite {
     val inXml = scala.xml.XML.loadFile("res/document.xml")
     val outXml = new WordMLNodeTransformer().transform(inXml, mapping.get(_))
     assert((inXml \\ "t").size === (outXml \\ "t").size)
+  }
+
+  def processTemplate(reader: Reader, writer: Writer) {
+    val source = Utils.readAll(reader)
+    val target = ParamUtils.replaceAllParams(source, mapping.get(_))
+    writer.write(target)
   }
 
   test("simple document processing") {

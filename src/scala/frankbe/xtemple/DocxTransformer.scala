@@ -26,7 +26,7 @@ class DocxTransformer extends ZipFileTransformer {
     override protected def innerTransform(sourceEntry: ZipEntry, getParam: String => Option[String], outputStream: OutputStream) {
       if (isTransformableXmlEntry(sourceEntry)) {
         println("detected " + sourceEntry.getName + "...")
-        val inputString = Utils.streamToString(sourceFile.getInputStream(sourceEntry))
+        val inputString = Utils.readAll(sourceFile.getInputStream(sourceEntry))
         //val inputString = IOUtils.toString(sourceFile.getInputStream(sourceEntry), UTF_8)
         val outputString = new TextTransformer().transform(inputString, getParam)
         outputStream.write(outputString.getBytes(Charset.forName("UTF-8")))

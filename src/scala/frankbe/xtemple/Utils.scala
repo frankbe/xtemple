@@ -1,6 +1,6 @@
 package frankbe.xtemple
 
-import java.io.{OutputStream, InputStream}
+import java.io.{StringWriter, OutputStream, InputStream}
 import java.nio.charset.Charset
 
 /**
@@ -10,6 +10,8 @@ import java.nio.charset.Charset
  * Time: 09:18
  */
 object Utils {
+
+  val EOF = -1
 
   def using[A, B <: {def close(): Unit}] (closeable: B) (f: B => A): A =
     try { f(closeable) } finally { closeable.close()
@@ -30,14 +32,23 @@ object Utils {
     doStream()
   }
 
-  def streamToString(is: java.io.InputStream, charset: String = "UTF-8") = {
+  def readAll(is: java.io.InputStream, charset: String = "UTF-8"): String = {
     val s = new java.util.Scanner(is, charset).useDelimiter("\\A")
     if (s.hasNext()) s.next() else ""
   }
 
+  def readAll(reader: java.io.Reader, bufferSize: Int = 8192): String = {
+    val buffer = new Array[Char](bufferSize)
+    val sb = new StringBuilder()
+    var n = EOF
+    while (EOF != {n = reader.read(buffer); n}) {
+      sb.append(n.toChar)
+    }
+    sb.toString()
+  }
+
   def copy(input: InputStream, output: OutputStream, bufferSize: Int = 8192): Long = {
     val buffer = new Array[Byte](bufferSize)
-    val EOF = -1
     var count: Long = 0
     var n: Int = 0
     while (EOF != ({ n = input.read(buffer); n})) {
