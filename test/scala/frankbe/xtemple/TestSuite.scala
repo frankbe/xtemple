@@ -5,6 +5,7 @@ import java.io._
 import collection.JavaConversions._
 import com.github.mustachejava.DefaultMustacheFactory
 
+
 class TestSuite extends FunSuite {
 
 
@@ -15,7 +16,7 @@ class TestSuite extends FunSuite {
   }*/
 
 
-  test("simple replacer") { 
+  test("simple replacer") {
     val mapping = Map("SUBJECT"->"duck", "OBJECT"->"worm")
     val template = new File("res/in-simple.docx").ensuring(_.exists)
     val outfile = new File("out-simple.docx").ensuring(f => !f.exists() || f.delete())
@@ -25,7 +26,7 @@ class TestSuite extends FunSuite {
     assert(outfile.exists && outfile.length > 0, "no target file")
   }
 
-  
+
   case class Item(name: String, count: Int, price: Double)
 
   test("mustache replacer") {   //pending //TODO repair

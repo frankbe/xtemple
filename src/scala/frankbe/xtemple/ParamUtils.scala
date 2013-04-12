@@ -1,6 +1,6 @@
 package frankbe.xtemple
 
-import java.io.{StringReader, Writer, Reader}
+import java.io.{Writer, Reader}
 import com.github.mustachejava.{MustacheFactory, DefaultMustacheFactory}
 
 /**
@@ -26,11 +26,9 @@ object ParamUtils {
     writer.write(target)
   }
 
-  //TODO repair
   def mustacheReplace(factory: MustacheFactory, reader: Reader, writer: Writer, scope: AnyRef) {
     val mustache = factory.compile(reader, "main")
     mustache.execute(writer, scope)
-    //writer.flush()
   }
 
 }
