@@ -29,4 +29,5 @@ abstract class ZipFileTransformer extends StatefulResultTransformer[ZipFile, Zip
       transform(new ZipFile(source), zipOut)(fn)
     }
   }
+
 }

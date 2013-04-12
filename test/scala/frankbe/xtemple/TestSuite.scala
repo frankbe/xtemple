@@ -5,45 +5,47 @@ import java.io._
 import collection.JavaConversions._
 import com.github.mustachejava.DefaultMustacheFactory
 
+object TestSuite {
+
+  private def mkOutputDir() = {
+    val outputDir = new java.io.File("./target")
+    outputDir.mkdir()
+    outputDir
+  }
+
+  case class Item(name: String, count: Int, price: Double)
+
+}
+
 
 class TestSuite extends FunSuite {
-
-
-  /*test("test WordML node processing") {      pending
-    val inXml = scala.xml.XML.loadFile("res/document.xml")
-    val outXml = new WordMLNodeTransformer().transform(inXml, mapping.get(_))
-    assert((inXml \\ "t").size === (outXml \\ "t").size)
-  }*/
-  private def mkOutputDir() = {
-    val outputDir = new java.io.File("./target") 
-    outputDir.mkdir()
-    outputDir 
-  }
+  import TestSuite._
 
   test("simple replacer") {
     val mapping = Map("SUBJECT"->"duck", "OBJECT"->"worm")
-    val template = new File("res/in-simple.docx").ensuring(_.exists)
-    val outfile = new File(mkOutputDir, "out-simple.docx").ensuring(f => !f.exists() || f.delete())
-    DocxTransformer.transform(template, outfile) {(reader, writer) =>
+    val template = new File("res/template-simple.docx").ensuring(_.exists)
+    val outfile = new File(mkOutputDir, "simple.docx").ensuring(f => !f.exists() || f.delete())
+    DocumentTransformer.forDocx().transform(template, outfile) {(reader, writer) =>
       ParamUtils.simpleReplace(reader, writer, mapping.get(_))
     }
     assert(outfile.exists && outfile.length > 0, "no target file")
   }
 
-
-  case class Item(name: String, count: Int, price: Double)
-
   test("mustache replacer") {   //pending //TODO repair
-   val order = mapAsJavaMap(Map("orderNo"->"123", 
-      "items"->seqAsJavaList(List(Item("book", 1, 22.5), Item("cat food", 2, 2.5), Item("camera", 1, 100)))
-    )) 
-    val template = new File("res/in-mustache.docx").ensuring(_.exists)
-    val outfile = new File(mkOutputDir, "out-mustache.docx").ensuring(f => !f.exists() || f.delete())
-    val mf = new DefaultMustacheFactory();
-    DocxTransformer.transform(template, outfile) {(reader, writer) =>
-      ParamUtils.mustacheReplace(mf, reader, writer, order)
+    def test(fileName: String) {
+      val order = mapAsJavaMap(Map("orderNo"->"123", 
+        "items"->seqAsJavaList(List(Item("book", 1, 22.5), Item("cat food", 2, 2.5), Item("camera", 1, 100)))
+      )) 
+      val template = new File("res/template-" + fileName).ensuring(_.exists)
+      val outfile = new File(mkOutputDir, fileName).ensuring(f => !f.exists() || f.delete())
+      val mf = new DefaultMustacheFactory();
+      DocumentTransformer.forFileName(fileName).transform(template, outfile) {(reader, writer) =>
+        ParamUtils.mustacheReplace(mf, reader, writer, order)
+      }
+      assert(outfile.exists && outfile.length > 0, "no target file")
     }
-    assert(outfile.exists && outfile.length > 0, "no target file")
+    test("sample2.docx")
+    test("sample2.odt")
   }
 
 
