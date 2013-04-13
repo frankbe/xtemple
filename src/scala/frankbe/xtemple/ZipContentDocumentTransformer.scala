@@ -5,6 +5,7 @@ import java.util.zip.{ZipFile, ZipEntry}
 import java.nio.charset.Charset
 import util.parsing.input.StreamReader
 import util.matching.Regex
+import collection.JavaConversions._
 
 
 /**
@@ -13,20 +14,11 @@ import util.matching.Regex
  * Date: 25.02.13
  * Time: 16:49
  */
-object DocumentTransformer {
-  def forDocx() = new DocumentTransformer("word/document.xml".r)         //"word/.+\.xml"    //TODO check
-  def forOdt() = new DocumentTransformer("content.xml".r)                //TODO check
-  def forFileName(name: String) = {
-    if (name.toLowerCase().endsWith(".docx")) forDocx()
-    else if (name.toLowerCase().endsWith(".odt")) forOdt()
-    else throw new IllegalArgumentException("unknown file type")
-  }
 
-}
 
-class DocumentTransformer(fittingEntryPattern: Regex) extends ZipFileTransformer {
+trait ZipContentDocumentTransformer extends ZipFileTransformer {
 
-  val UTF_8 = Charset.forName("UTF-8")
+  val fittingEntryPattern: Regex
 
   def isTransformableXmlEntry(entry: ZipEntry) = fittingEntryPattern.findFirstIn(entry.getName).isDefined
 
@@ -47,5 +39,13 @@ class DocumentTransformer(fittingEntryPattern: Regex) extends ZipFileTransformer
     }
   }
 
+}
+
+object DocxTransformer extends ZipContentDocumentTransformer {
+  val fittingEntryPattern: Regex = "word/document.xml".r          //"word/.+\.xml"    //TODO check
+}
+
+object OdtTransformer extends ZipContentDocumentTransformer {
+  val fittingEntryPattern: Regex = "content.xml".r          //TODO check
 }
 

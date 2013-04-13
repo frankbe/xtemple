@@ -1,7 +1,7 @@
 package frankbe.xtemple
 
 import java.util.zip.{ZipOutputStream, ZipEntry, ZipFile}
-import collection.JavaConversions.enumerationAsScalaIterator
+import collection.JavaConversions._
 import Utils._
 import java.io._
 
@@ -27,6 +27,20 @@ abstract class ZipFileTransformer extends StatefulResultTransformer[ZipFile, Zip
     require(source.isFile, "the source file " + source + " is not a file")
     using(new ZipOutputStream( new FileOutputStream(target))) { zipOut =>
       transform(new ZipFile(source), zipOut)(fn)
+    }
+  }
+
+
+  def transform(source: File, target: File, scopeObj: Any) {
+    // convert to java types, because of missing scala support in the mustache java library
+    // TODO refactor ... overwrite DefaultMustacheFactory
+    val obj = scopeObj match {
+      case m: Map[_,_] => mapAsJavaMap(m)
+      case s: Seq[_] => seqAsJavaList(s)
+      case x => x
+    }
+    transform(source, target) { (reader, writer) =>
+      Replacer.replace(reader, writer, obj)
     }
   }
 
