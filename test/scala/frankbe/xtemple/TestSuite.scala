@@ -20,7 +20,7 @@ object TestSuite {
 class TestSuite extends FunSuite {
   import TestSuite._
 
-  private def test(transformer: ZipContentDocumentTransformer, inFileName: String, outFileName: String, obj: Any) {
+  private def test(transformer: DocumentTransformer, inFileName: String, outFileName: String, obj: Any) {
       val template = new File("res/" + inFileName).ensuring(_.exists)
       val outfile = new File(mkOutputDir, outFileName).ensuring(f => !f.exists() || f.delete())
       transformer.transform(template, outfile)(obj)

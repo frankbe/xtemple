@@ -13,10 +13,12 @@ import java.io._
  */
 abstract class ZipFileTransformer extends StatefulResultTransformer[File, File]  {
 
-  protected def createEntryTransformer(source: ZipFile)(fn: RewriteContent): ZipEntryTransformer
+  protected def isTransformableEntry(entry: ZipEntry): Boolean
 
   private def transformEntries(source: ZipFile, target: ZipOutputStream)(fn: RewriteContent) {
-    val et = createEntryTransformer(source)(fn)
+    val et = new ZipEntryTransformer(source) {
+      override protected def skipTransformation(entry: ZipEntry): Boolean = !isTransformableEntry(entry)
+    }
     for (item: ZipEntry <- enumerationAsScalaIterator(source.entries)) {
       et.transform(item, target)(fn)
     }

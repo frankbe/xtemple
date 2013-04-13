@@ -17,7 +17,7 @@ object Utils {
   }
 
   // see http://stackoverflow.com/a/6928784
-  def stream(inputStream: InputStream, outputStream: OutputStream, bufferSize: Int = 16384) {
+  private def stream(inputStream: InputStream, outputStream: OutputStream, bufferSize: Int = 16384) {
     val buffer = new Array[Byte](bufferSize)
     def doStream(total: Int = 0): Int = {
       val n = inputStream.read(buffer)
