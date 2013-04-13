@@ -1,6 +1,6 @@
 package frankbe
 
-import java.io.{Reader, Writer}
+import java.io.{File, Reader, Writer}
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,5 +20,14 @@ package object xtemple {
   trait StatefulResultTransformer[S, T] {
     def transform(source: S, target: T)(fn: RewriteContent)
   }
+
+  implicit def str2file(str: String) = new File(str)
+
+  implicit def anyScope2rewriteContent(scopeObj: Any): RewriteContent = Rewriter(scopeObj)
+
+
+  val transformDocx = DocxTransformer.transform(_,_)
+
+  val transformOdt = OdtTransformer.transform(_,_)
 
 }

@@ -3,7 +3,6 @@ package frankbe.xtemple
 import org.scalatest.FunSuite
 import java.io._
 import collection.JavaConversions._
-import com.github.mustachejava.DefaultMustacheFactory
 
 object TestSuite {
 
@@ -24,12 +23,12 @@ class TestSuite extends FunSuite {
   private def test(transformer: ZipContentDocumentTransformer, inFileName: String, outFileName: String, obj: Any) {
       val template = new File("res/" + inFileName).ensuring(_.exists)
       val outfile = new File(mkOutputDir, outFileName).ensuring(f => !f.exists() || f.delete())
-      transformer.transform(template, outfile, obj)
+      transformer.transform(template, outfile)(obj)
       assert(outfile.exists && outfile.length > 0, "no target file")
     }
  
   test("mustache replacer sample 1") { 
-    val mapping = Map("subject"->"duck", "object"->"worm")
+    val mapping = Map("animal"->"duck", "food"->"worm")
     test(DocxTransformer, "sample1-templ.docx", "sample1.docx", mapping)
     test(OdtTransformer, "sample1-templ.odt", "sample1.odt", mapping)
   }
@@ -44,12 +43,10 @@ class TestSuite extends FunSuite {
 
 
   test("alternative simple replacer") {
-    val mapping = Map("subject"->"duck", "object"->"worm")
+    val mapping = Map("animal"->"duck", "food"->"worm")
     val template = new File("res/sample1-templ.docx").ensuring(_.exists)
     val outfile = new File(mkOutputDir, "sample1-alternative.docx").ensuring(f => !f.exists() || f.delete())
-    DocxTransformer.transform(template, outfile) {(reader, writer) =>
-      Replacer.replace(reader, writer, mapping.get(_))
-    }
+    DocxTransformer.transform(template, outfile)(Rewriter(mapping.get(_)))
     assert(outfile.exists && outfile.length > 0, "no target file")
   }
 

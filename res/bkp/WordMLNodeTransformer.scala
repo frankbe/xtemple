@@ -25,7 +25,7 @@ class WordMLNodeTransformer extends StatelessResultTransformer[Node, Node]{
           case x => x
         }
         if (textElements.contains(n))
-          //Array[Node](copyWithNewText(n, Replacer.simpleReplace(n.text, getParam)))
+          //Array[Node](copyWithNewText(n, Rewriter.simpleReplace(n.text, getParam)))
           Array[Node](n)
         else Array[Node](n)
       }

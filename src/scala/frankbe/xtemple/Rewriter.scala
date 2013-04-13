@@ -1,8 +1,7 @@
 package frankbe.xtemple
 
-import java.io.{Writer, Reader}
 import com.github.mustachejava.{MustacheFactory, DefaultMustacheFactory}
-import com.github.mustachejava
+import collection.JavaConversions._
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,16 +9,16 @@ import com.github.mustachejava
  * Date: 26.02.13
  * Time: 16:24
  */
-object Replacer {
+object Rewriter {
 
   private lazy val paramPattern = """\{\{([A-Za-z0-9_]+)\}\}""".r
 
-  def replace(reader: Reader, writer: Writer, getParam: String=>Option[String]) {
+  def apply(getParam: String=>Option[String]): RewriteContent = (reader, writer) => {
     val source = Utils.readAll(reader)
     val target = paramPattern.replaceAllIn(source, {matcher =>
       require(matcher.groupCount == 1, "regex error - unexpected group count")
       val paramName = matcher.group(1)
-      println("matcher.matched: " + paramName)
+      //println("matcher.matched: " + paramName)
       getParam(paramName).getOrElse("-")// matcher.source.toString)
     })
     //println("source.length: " + source.length)
@@ -27,15 +26,18 @@ object Replacer {
     writer.write(target)
   }
 
-  def replace(reader: Reader, writer: Writer, scope: Any, factory: MustacheFactory) {
-    val mustache = factory.compile(reader, "main")
-    mustache.execute(writer, scope)
-  }
-
   private lazy val defaultMustacheFactory = new DefaultMustacheFactory()
 
-  def replace(reader: Reader, writer: Writer, scope: Any) {
-    replace(reader, writer, scope, defaultMustacheFactory)
+  def apply(scope: Any, factory: MustacheFactory = defaultMustacheFactory): RewriteContent = (reader, writer) => {
+  // convert to java types, because of missing scala support in the mustache java library
+    // TODO refactor ... overwrite DefaultMustacheFactory
+    def adjustScopeObj(scopeObj: Any) = scopeObj match {
+      case m: Map[_,_] => mapAsJavaMap(m)
+      case s: Seq[_] => seqAsJavaList(s)
+      case x => x
+    }
+    val mustache = factory.compile(reader, "main")
+    mustache.execute(writer, adjustScopeObj(scope))
   }
 
 }

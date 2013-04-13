@@ -2,10 +2,7 @@ package frankbe.xtemple
 
 import java.io._
 import java.util.zip.{ZipFile, ZipEntry}
-import java.nio.charset.Charset
-import util.parsing.input.StreamReader
 import util.matching.Regex
-import collection.JavaConversions._
 
 
 /**
@@ -14,7 +11,9 @@ import collection.JavaConversions._
  * Date: 25.02.13
  * Time: 16:49
  */
-
+object ZipContentDocumentTransformer {
+  implicit def str2file(s: String) = new java.io.File(s)
+}
 
 trait ZipContentDocumentTransformer extends ZipFileTransformer {
 
@@ -25,7 +24,7 @@ trait ZipContentDocumentTransformer extends ZipFileTransformer {
   protected def createEntryTransformer(sourceFile: ZipFile)(fn: RewriteContent) = new ZipEntryTransformer(sourceFile) {
     override protected def copy(sourceEntry: ZipEntry, outputStream: OutputStream) {
       if (isTransformableXmlEntry(sourceEntry)) {
-        println("detected " + sourceEntry.getName + "...")
+        //println("detected " + sourceEntry.getName + "...")
         val reader = new BufferedReader(new InputStreamReader(sourceFile.getInputStream(sourceEntry))) {
           override def close() {} // Stream will be closed at once at the end of the zip file
         }
