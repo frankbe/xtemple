@@ -1,7 +1,7 @@
 xtemple
 =======
 
-a simple template engine for docx and odt files (written in scala)
+A simple template engine for *.docx and *.odt files (written in scala)
 
 Features
 --------
@@ -20,17 +20,15 @@ in scala repl...
 
 this example takes the template file res/sample1-templ.docx with the text
 
-    //TEXT
+    ... the {{animal}} eats a {{food}} ...
 
 and create an output file target/sample1.docx with the text
 
-   //TEXT
+    ... the duck eats a worm ...
 
 for further samples, take a look at the unit tests
 
 Recommendations
-----------------
-I recommend to create the template file allways with Open/Libre Office Write, even if you create docx templates.
-Thats because MS Word creates sometimes unpredictable xml markup.
-
+---------------
+You can edit the template files including the placeholders with the standard editors (MS Word or Open/Libre Office), but they produce sometimes unparsable xml content. Since docx and odt files are just zip files which contain xml files, I recoment to check the modified content of the template files after editing. 
 
