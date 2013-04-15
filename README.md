@@ -6,7 +6,7 @@ A simple template engine for *.docx and *.odt files (written in scala)
 Features
 --------
 - replace parameters in Open Office (odt) and MS Word (docx) files
-- uses mustache as the default internal template processor
+- uses [mustache] as the default internal template processor
 - replaceable template processor
 
 Quickstart
@@ -32,3 +32,4 @@ Recommendations
 ---------------
 You can edit the template files including the placeholders with the standard editors (MS Word or Open/Libre Office), but they produce sometimes unparsable xml content. Since docx and odt files are just zip files which contain xml files, I recommend to check the modified content of the template files after editing. For docx look at the zip entry *word/document.xml*, for odt look at *content.xml*.
 
+[mustache]:https://github.com/spullara/mustache.java
