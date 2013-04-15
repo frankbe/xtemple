@@ -18,11 +18,11 @@ trait DocumentTransformer extends ZipFileTransformer {
     fittingEntryPattern.findFirstIn(entry.getName).isDefined
 }
 
-object DocxTransformer extends DocumentTransformer {
+class DocxTransformer extends DocumentTransformer {
   val fittingEntryPattern: Regex = "word/document.xml".r          //"word/.+\.xml"    //TODO check
 }
 
-object OdtTransformer extends DocumentTransformer {
+class OdtTransformer extends DocumentTransformer {
   val fittingEntryPattern: Regex = "content.xml".r          //TODO check
 }
 

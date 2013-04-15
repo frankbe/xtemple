@@ -29,16 +29,16 @@ class TestSuite extends FunSuite {
  
   test("mustache replacer sample 1") { 
     val mapping = Map("animal"->"duck", "food"->"worm")
-    test(DocxTransformer, "sample1-templ.docx", "sample1.docx", mapping)
-    test(OdtTransformer, "sample1-templ.odt", "sample1.odt", mapping)
+    test(docx, "sample1-templ.docx", "sample1.docx", mapping)
+    test(odt, "sample1-templ.odt", "sample1.odt", mapping)
   }
 
   test("mustache replacer sample 2") { 
     val order = mapAsJavaMap(Map("orderNo"->"123", 
         "items"->seqAsJavaList(List(Item("book", 1, 22.5), Item("cat food", 2, 2.5), Item("camera", 1, 100)))
       )) 
-    test(DocxTransformer, "sample2-templ.docx", "sample2.docx", order)
-    test(OdtTransformer, "sample2-templ.odt", "sample2.odt", order)
+    test(docx, "sample2-templ.docx", "sample2.docx", order)
+    test(odt, "sample2-templ.odt", "sample2.odt", order)
   }
 
 
@@ -46,7 +46,7 @@ class TestSuite extends FunSuite {
     val mapping = Map("animal"->"duck", "food"->"worm")
     val template = new File("res/sample1-templ.docx").ensuring(_.exists)
     val outfile = new File(mkOutputDir, "sample1-alternative.docx").ensuring(f => !f.exists() || f.delete())
-    DocxTransformer.transform(template, outfile)(Rewriter(mapping.get(_)))
+    docx.transform(template, outfile)(Rewriter(mapping.get(_)))
     assert(outfile.exists && outfile.length > 0, "no target file")
   }
 

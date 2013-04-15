@@ -1,6 +1,8 @@
 package frankbe
 
 import java.io.{File, Reader, Writer}
+import scala.language.implicitConversions
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,9 +27,8 @@ package object xtemple {
 
   implicit def anyScope2rewriteContent(scopeObj: Any): RewriteContent = Rewriter(scopeObj)
 
+  lazy val docx = new DocxTransformer
 
-  val transformDocx = DocxTransformer.transform(_,_)
-
-  val transformOdt = OdtTransformer.transform(_,_)
+  lazy val odt  = new OdtTransformer
 
 }

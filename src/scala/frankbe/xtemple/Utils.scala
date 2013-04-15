@@ -1,6 +1,7 @@
 package frankbe.xtemple
 
 import java.io.{OutputStream, InputStream}
+import scala.language.reflectiveCalls
 
 /**
  * Created with IntelliJ IDEA.
