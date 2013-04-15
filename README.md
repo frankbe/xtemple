@@ -30,5 +30,5 @@ for further samples, take a look at the unit tests
 
 Recommendations
 ---------------
-You can edit the template files including the placeholders with the standard editors (MS Word or Open/Libre Office), but they produce sometimes unparsable xml content. Since docx and odt files are just zip files which contain xml files, I recoment to check the modified content of the template files after editing. For docx look at the zip entry *word/document.xml*, for odt look at *content.xml*.
+You can edit the template files including the placeholders with the standard editors (MS Word or Open/Libre Office), but they produce sometimes unparsable xml content. Since docx and odt files are just zip files which contain xml files, I recommend to check the modified content of the template files after editing. For docx look at the zip entry *word/document.xml*, for odt look at *content.xml*.
 
