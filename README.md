@@ -14,9 +14,8 @@ Quickstart
 in scala repl...
 
     scala> import frankbe.xtemple._
-    import frankbe.xtemple._
-
-    scala> docx.transform("res/sample1-templ.docx", "target/sample1.docx")(Map("animal"->"duck","food"->"worm"))
+    scala> val params = Map("animal"->"duck","food"->"worm")
+    scala> docx.transform("res/sample1-templ.docx", "target/sample1.docx")(params)
 
 this example takes the template file *res/sample1-templ.docx* with the text
 
