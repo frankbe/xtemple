@@ -21,7 +21,7 @@ this example takes the template file *res/sample1-templ.docx* with the text
 
     ... the {{animal}} eats a {{food}} ...
 
-and create an output file *target/sample1.docx* with the text
+and creates an output file *target/sample1.docx* with the text
 
     ... the duck eats a worm ...
 
