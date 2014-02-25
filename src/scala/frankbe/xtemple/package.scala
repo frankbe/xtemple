@@ -15,11 +15,11 @@ package object xtemple {
 
   type RewriteContent = (Reader, Writer) => Unit
 
-  trait StatelessResultTransformer[S, T] {
+  trait StatelessTransformer[S, T] {
     def transform(source: S)(fn: RewriteContent): T
   }
 
-  trait StatefulResultTransformer[S, T] {
+  trait StatefulTransformer[S, T] {
     def transform(source: S, target: T)(fn: RewriteContent)
   }
 

@@ -9,7 +9,7 @@ import java.io._
  * Date: 26.02.13
  * Time: 14:45
  */
-class ZipEntryTransformer(inputFile: ZipFile) extends StatefulResultTransformer[ZipEntry, ZipOutputStream] {
+class ZipEntryTransformer(inputFile: ZipFile) extends StatefulTransformer[ZipEntry, ZipOutputStream] {
 
   protected def skipEntry(entry: ZipEntry) = false
   protected def skipTransformation(entry: ZipEntry) = false

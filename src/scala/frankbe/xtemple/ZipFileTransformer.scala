@@ -11,7 +11,7 @@ import java.io._
  * Date: 26.02.13
  * Time: 10:27
  */
-abstract class ZipFileTransformer extends StatefulResultTransformer[File, File]  {
+abstract class ZipFileTransformer extends StatefulTransformer[File, File]  {
 
   protected def isTransformableEntry(entry: ZipEntry): Boolean
 
